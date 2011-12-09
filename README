@@ -1,0 +1,6 @@
+msmtp-wrappers
+Copyright (c) 2011 Alejandro Mery <amery@geeks.cl>
+
+A set of scripts to add some fancy features to msmtp[1]
+
+[1] http://msmtp.sourceforge.net/
