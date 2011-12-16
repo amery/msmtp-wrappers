@@ -33,8 +33,8 @@ DOMAIN=${DOMAIN:-example.org}
 TMPFILE="${TMPDIR:-/tmp}/msmtp_aliases.$$"
 LOGFILE="$HOME/msmtp_aliases.log"
 
-MSMTP="${MSMTP_ALIASES_NEXT:-$MSMTP}"
-[ -n "$MSMTP" ] || MSMTP=$(which msmtp || echo "/usr/local/bin/msmtp")
+NEXT="${MSMTP_ALIASES_NEXT:-$MSMTP}"
+[ -n "$NEXT" ] || NEXT=$(which msmtp || echo "/usr/local/bin/msmtp")
 
 log() {
 	local P="[$(date +%Y-%m-%d-%H.%M.%S)] [$$]"
@@ -86,7 +86,7 @@ fi
 eval "set -- $ARGS"
 [ -z "$mangled" ] || log "+ $0 $@"
 
-"$MSMTP" "$@" < "$TMPFILE"
+"$NEXT" "$@" < "$TMPFILE"
 errno=$?
 rm -f "$TMPFILE"
 exit $errno
