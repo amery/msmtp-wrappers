@@ -25,7 +25,7 @@
 
 DOMAIN=example.org
 TMPFILE="${TMPDIR:-/tmp}/msmtp_aliases.$$"
-LOGFILE="/var/log/msmtp.log"
+LOGFILE="$HOME/msmtp_aliases.log"
 
 MSMTP=$(which msmtp || echo "/usr/local/bin/msmtp")
 
