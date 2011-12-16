@@ -23,11 +23,12 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-DOMAIN=example.org
+DOMAIN=${DOMAIN:-example.org}
 TMPFILE="${TMPDIR:-/tmp}/msmtp_aliases.$$"
 LOGFILE="$HOME/msmtp_aliases.log"
 
-MSMTP=$(which msmtp || echo "/usr/local/bin/msmtp")
+MSMTP="$MSMTP_ALIASES_NEXT"
+[ -n "$MSMTP" ] || MSMTP=$(which msmtp || echo "/usr/local/bin/msmtp")
 
 log() {
 	echo "$*" >> "$LOGFILE"
