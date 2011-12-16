@@ -23,18 +23,26 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Supported ENV vars:
+# * DOMAIN: domain to append to usersnames without an alias (default: example.org)
+# * TMPDIR: directory to temporarily store the messages
+# * MSMTP_ALIASES_NEXT: preferred next `msmtp` wrapper
+# * MSMTP: generic next `msmtp` wrapper
+
 DOMAIN=${DOMAIN:-example.org}
 TMPFILE="${TMPDIR:-/tmp}/msmtp_aliases.$$"
 LOGFILE="$HOME/msmtp_aliases.log"
 
-MSMTP="$MSMTP_ALIASES_NEXT"
+MSMTP="${MSMTP_ALIASES_NEXT:-$MSMTP}"
 [ -n "$MSMTP" ] || MSMTP=$(which msmtp || echo "/usr/local/bin/msmtp")
 
 log() {
-	echo "$*" >> "$LOGFILE"
+	local P="[$(date +%Y-%m-%d-%H.%M.%S)] [$$]"
+
+	echo "$P:$*" >> "$LOGFILE"
 }
 
-log "[$$]  $0 $*"
+log "  $0 $*"
 
 cat > $TMPFILE # email content
 ARGS= mangled= read_recipients=
@@ -70,13 +78,13 @@ done
 if [ -n "$read_recipients" ]; then
 	for x in $(sed -n -e 's,^To: .*<\([^@]\+\)>$,\1,p' "$TMPFILE"); do
 		y="$(alias_of $x)"
-		log "[$$]  To: <$x> -> <$y>"
+		log "  To: <$x> -> <$y>"
 		sed -i "s,^To: \(.*\)<$x>$,To: \1<$y>," "$TMPFILE"
 	done
 fi
 
 eval "set -- $ARGS"
-[ -z "$mangled" ] || log "[$$]+ $0 $@"
+[ -z "$mangled" ] || log "+ $0 $@"
 
 "$MSMTP" "$@" < "$TMPFILE"
 errno=$?
