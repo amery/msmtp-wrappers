@@ -23,9 +23,12 @@
 # OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+# Supported ENV vars:
+# * MSMTP_QUEUE: location of the queue (default: ~/.msmtp-queue)
+
 umask 077
 
-QUEUE="$HOME/.msmtp-queue"
+QUEUE="${MSMTP_QUEUE:-$HOME/.msmtp-queue}"
 TSTAMP=$(date +%Y-%m-%d-%H.%M.%S)
 
 BASE="$QUEUE/$TSTAMP"
